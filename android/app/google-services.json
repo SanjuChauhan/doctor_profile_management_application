@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "192498431519",
+    "project_id": "phoneauthentication-flutter",
+    "storage_bucket": "phoneauthentication-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192498431519:android:be7ff4e6666daf7b73872a",
+        "android_client_info": {
+          "package_name": "com.example.doctor_profile_management_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192498431519-am2lpv6dgr5apjsnrajb0v7frb73ao7b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.doctor_profile_management_application",
+            "certificate_hash": "5682da829917775f1919a3f3b82ee7880c31a883"
+          }
+        },
+        {
+          "client_id": "192498431519-u4vmdjiuv5fjmofpa7kgvfvms9tvmchv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcwNKns23sG4DMC2lwvajuZduxUgnRrtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192498431519-u4vmdjiuv5fjmofpa7kgvfvms9tvmchv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
