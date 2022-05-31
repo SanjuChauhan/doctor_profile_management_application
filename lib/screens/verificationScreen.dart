@@ -157,6 +157,7 @@ class _VerificationScreenPageState extends State<VerificationScreen> {
   }
 
   OtpFieldController otpController = OtpFieldController();
+  var checkBoxValue = false;
 
   @override
   Widget build(BuildContext context) {
@@ -196,26 +197,34 @@ class _VerificationScreenPageState extends State<VerificationScreen> {
                 width: MediaQuery.of(context).size.width,
                 textFieldAlignment: MainAxisAlignment.spaceAround,
                 fieldStyle: FieldStyle.box,
-                outlineBorderRadius: 15,
+                outlineBorderRadius: 5,
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: appDimens.text20,
                   color: AppColors.accentColor,
                 ),
                 onChanged: (pin) {
                   print("Changed: " + pin);
-                  if (pin.length < 6) {
-                    setState(() {
-                      isButtonEnable = false;
-                    });
-                  }
+                  otp = pin;
+                  checkButtonEnable();
                 },
                 onCompleted: (pin) {
                   print("Completed: " + pin);
-                  otp = pin;
-                  setState(() {
-                    isButtonEnable = true;
-                  });
                 },
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                left: appDimens.paddingw16 * 2,
+                right: appDimens.paddingw16 * 2,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                "Please enter verification code that was sent to ${widget.countrycode + " " + widget.mobile}",
+                style: TextStyle(
+                  fontSize: appDimens.text16,
+                  color: AppColors.whiteColor,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
             ),
             SizedBox(height: 20),
@@ -229,91 +238,54 @@ class _VerificationScreenPageState extends State<VerificationScreen> {
                 isButtonEnable: isButtonEnable,
                 color: AppColors.greenColor,
                 textColor: AppColors.whiteColor),
+            CheckboxListTile(
+              //"I agree to the Terms of Use and Privacy Policy"
+              title: RichText(
+                text: TextSpan(children: <TextSpan>[
+                  TextSpan(
+                      text: "I agree to the ",
+                      style: TextStyle(color: AppColors.whiteColor,fontSize: appDimens.text14)),
+                  TextSpan(
+                      text: "Terms of Use ",
+                      style: TextStyle(
+                          color: AppColors.accentColor,
+                          fontSize: appDimens.text14,
+                          fontWeight: FontWeight.bold)),
+                  TextSpan(
+                      text: "and ",
+                      style: TextStyle(color: AppColors.whiteColor,fontSize: appDimens.text14)),
+                  TextSpan(
+                      text: "Privacy Policy",
+                      style: TextStyle(
+                          color: AppColors.accentColor,
+                          fontSize: appDimens.text14,
+                          fontWeight: FontWeight.bold)),
+                ]),
+              ),
+              value: checkBoxValue,
+              onChanged: (v) => {_onCheckedChanged()},
+              controlAffinity: ListTileControlAffinity.leading,
+            ),
           ],
         )));
+  }
 
-    // return Scaffold(
-    //   backgroundColor: AppColors.primaryColor,
-    //   body: Stack(
-    //     children: <Widget>[
-    //       SafeArea(
-    //         top: false,
-    //         child: Scaffold(
-    //           resizeToAvoidBottomInset: true,
-    //           backgroundColor: AppColors.primaryColor,
-    //           body: SingleChildScrollView(
-    //             child: Container(
-    //               constraints: BoxConstraints(
-    //                   maxHeight: size.height - mediaQuerydata.padding.top),
-    //               child: Column(
-    //                 crossAxisAlignment: CrossAxisAlignment.center,
-    //                 children: <Widget>[
-    //                   Container(
-    //                     margin: EdgeInsets.only(top: appDimens.paddingw2),
-    //                     alignment: Alignment.center,
-    //                     child: Text(
-    //                       "ENTER VERIFICATION CODE",
-    //                       style: TextStyle(
-    //                         fontSize: appDimens.text20,
-    //                         color: AppColors.whiteColor,
-    //                         fontWeight: FontWeight.bold,
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   Container(
-    //                     margin: EdgeInsets.only(
-    //                       left: 40,
-    //                       right: 40,
-    //                       bottom: 20,
-    //                     ),
-    //                     child: OTPTextField(
-    //                       controller: otpController,
-    //                       length: 6,
-    //                       width: MediaQuery.of(context).size.width,
-    //                       textFieldAlignment: MainAxisAlignment.spaceAround,
-    //                       fieldWidth: 45,
-    //                       fieldStyle: FieldStyle.box,
-    //                       outlineBorderRadius: 15,
-    //                       style: TextStyle(
-    //                         fontSize: 20,
-    //                         color: AppColors.accentColor,
-    //                       ),
-    //                       onChanged: (pin) {
-    //                         print("Changed: " + pin);
-    //                         if (pin.length < 6) {
-    //                           setState(() {
-    //                             isButtonEnable = false;
-    //                           });
-    //                         }
-    //                       },
-    //                       onCompleted: (pin) {
-    //                         print("Completed: " + pin);
-    //                         otp = pin;
-    //                         setState(() {
-    //                           isButtonEnable = true;
-    //                         });
-    //                       },
-    //                     ),
-    //                   ),
-    //                   SizedBox(height: 60),
-    //                   createOrangeBTN(
-    //                       title: "Login",
-    //                       onPressedd: () {
-    //                         _onButtonClick();
-    //                       },
-    //                       isButtonEnable: isButtonEnable,
-    //                       color: AppColors.greenColor,
-    //                       textColor: AppColors.whiteColor),
-    //                 ],
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //       isLoading ? Utility.progress(context) : Container(),
-    //     ],
-    //   ),
-    // );
+  void _onCheckedChanged() {
+    setState(() {
+      checkBoxValue = !checkBoxValue;
+      print("CheckBox value: $checkBoxValue");
+      checkButtonEnable();
+    });
+  }
+
+  void checkButtonEnable() {
+    setState(() {
+      if (checkBoxValue && otp.length == 6) {
+        isButtonEnable = true;
+      } else {
+        isButtonEnable = false;
+      }
+    });
   }
 
   _onButtonClick() {

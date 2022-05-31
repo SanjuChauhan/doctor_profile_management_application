@@ -1,7 +1,9 @@
 import 'package:doctor_profile_management_application/models/contactModel.dart';
+import 'package:doctor_profile_management_application/screens/contactDetailsScreen.dart';
 import 'package:flutter/material.dart';
 
 import '../services/apiCallService.dart';
+import '../utility/appColors.dart';
 import '../utility/utility.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,20 +32,31 @@ class _HomeScreenState extends State<HomeScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("ABC"),
+        title: Text("BIMA DOCTOR"),
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
         child: Column(
           children: [
             Expanded(
               child: ListView.builder(
                 itemCount: contactListData.length,
                 itemBuilder: (content, index) {
-                  return Card(
+                  return Container(
+                    padding: EdgeInsets.only(
+                      top: 8,
+                      bottom: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: AppColors.greyText),
+                      ),
+                    ),
                     child: ListTile(
-                      onTap: (){
+                      onTap: () {
                         print(this.contactListData[index].id);
+                        navigateToContactDetailScreen(
+                            this.contactListData[index]);
                       },
                       leading: ClipOval(
                         child: SizedBox.fromSize(
@@ -53,9 +66,24 @@ class _HomeScreenState extends State<HomeScreen> {
                               fit: BoxFit.cover),
                         ),
                       ),
-                      title: Text(this.contactListData[index].first_name +
-                          " " +
-                          this.contactListData[index].last_name),
+                      title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                this.contactListData[index].first_name +
+                                    " " +
+                                    this.contactListData[index].last_name,
+                                style: TextStyle(color: AppColors.blackColor)),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(this.contactListData[index].specialization,
+                                style:
+                                    TextStyle(color: AppColors.selectedColor)),
+                          ]),
+                      // title: Text(this.contactListData[index].first_name +
+                      //     " " +
+                      //     this.contactListData[index].last_name),
                       trailing: SizedBox(
                         height: 30.0,
                         width: 30.0,
@@ -95,5 +123,16 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       Utility.showToast(msg: "Fail To Load Contact data");
     }
+  }
+
+  void navigateToContactDetailScreen(ContactsData data) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ContactDetailsScreen(
+          contactsData: data,
+        ),
+      ),
+    );
   }
 }

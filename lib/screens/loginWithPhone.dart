@@ -177,15 +177,23 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
   }
 
   continueClick() {
-    FocusScope.of(context).requestFocus(new FocusNode());
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => VerificationScreen(
-          mobile: mobileNumberEditingController.text,
-          countrycode: countryCodeEditingController.text ?? "+91",
+    if (countryCodeEditingController.text.isEmpty) {
+      Utility.showToast(msg: "Please enter country code");
+    } else if (mobileNumberEditingController.text.isEmpty) {
+      Utility.showToast(msg: "Mobile number can not be empty");
+    } else if (mobileNumberEditingController.text.length != 10) {
+      Utility.showToast(msg: "Please enter valid mobile number");
+    } else {
+      FocusScope.of(context).requestFocus(new FocusNode());
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VerificationScreen(
+            mobile: mobileNumberEditingController.text,
+            countrycode: countryCodeEditingController.text ?? "+91",
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
